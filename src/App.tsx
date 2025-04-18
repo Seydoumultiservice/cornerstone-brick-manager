@@ -15,63 +15,66 @@ import Accounting from "./pages/Accounting";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import Quotes from "./pages/Quotes";
+import { useState } from "react";
 
-const queryClient = new QueryClient();
+const App = () => {
+  const [queryClient] = useState(() => new QueryClient());
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/commandes" element={
-            <Layout>
-              <OrdersList />
-            </Layout>
-          } />
-          <Route path="/commandes/nouvelle" element={
-            <Layout>
-              <NewOrder />
-            </Layout>
-          } />
-          <Route path="/commandes/:id" element={
-            <Layout>
-              <OrderDetail />
-            </Layout>
-          } />
-          <Route path="/production" element={
-            <Layout>
-              <Production />
-            </Layout>
-          } />
-          <Route path="/comptabilite" element={
-            <Layout>
-              <Accounting />
-            </Layout>
-          } />
-          <Route path="/utilisateurs" element={
-            <Layout>
-              <Users />
-            </Layout>
-          } />
-          <Route path="/parametres" element={
-            <Layout>
-              <Settings />
-            </Layout>
-          } />
-          <Route path="/devis-factures" element={
-            <Layout>
-              <Quotes />
-            </Layout>
-          } />
-          {/* Route "catch-all" pour 404 */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/commandes" element={
+              <Layout>
+                <OrdersList />
+              </Layout>
+            } />
+            <Route path="/commandes/nouvelle" element={
+              <Layout>
+                <NewOrder />
+              </Layout>
+            } />
+            <Route path="/commandes/:id" element={
+              <Layout>
+                <OrderDetail />
+              </Layout>
+            } />
+            <Route path="/production" element={
+              <Layout>
+                <Production />
+              </Layout>
+            } />
+            <Route path="/comptabilite" element={
+              <Layout>
+                <Accounting />
+              </Layout>
+            } />
+            <Route path="/utilisateurs" element={
+              <Layout>
+                <Users />
+              </Layout>
+            } />
+            <Route path="/parametres" element={
+              <Layout>
+                <Settings />
+              </Layout>
+            } />
+            <Route path="/devis-factures" element={
+              <Layout>
+                <Quotes />
+              </Layout>
+            } />
+            {/* Route "catch-all" pour 404 */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

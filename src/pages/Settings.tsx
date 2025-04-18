@@ -1,154 +1,110 @@
 
 import { useState } from "react";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle 
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { 
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { 
-  BellRing, 
-  Building, 
-  CreditCard, 
-  Download, 
-  Globe, 
-  HardDrive, 
-  LifeBuoy, 
-  Mail, 
-  MessageSquare, 
-  Package, 
-  PhoneCall, 
-  Save, 
-  Smartphone, 
-  Upload, 
-  UserCog 
-} from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { CustomInput } from "@/components/ui/custom-input";
-import { toast } from "@/components/ui/sonner";
+import { Separator } from "@/components/ui/separator";
+import { toast } from "sonner";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AlertTriangle, Save, Upload } from "lucide-react";
 
 const Settings = () => {
   const [companyName, setCompanyName] = useState("Cornerstone Briques");
-  const [email, setEmail] = useState("contact@cornerstonebriques.com");
+  const [address, setAddress] = useState("Zone Industrielle, Lomé, Togo");
   const [phone, setPhone] = useState("+228 70 00 00 00");
-  const [address, setAddress] = useState("Zone industrielle, Lomé, Togo");
+  const [email, setEmail] = useState("contact@cornerstonebriques.com");
   const [taxId, setTaxId] = useState("TG123456789");
-  const [logoPreview, setLogoPreview] = useState("/placeholder.svg");
-
-  const handleSaveCompanyInfo = () => {
-    toast.success("Informations entreprise enregistrées", {
-      description: "Les paramètres de l'entreprise ont été mis à jour"
-    });
+  const [stockAlerts, setStockAlerts] = useState(true);
+  const [orderNotifications, setOrderNotifications] = useState(true);
+  const [smsNotifications, setSmsNotifications] = useState(true);
+  const [backupFrequency, setBackupFrequency] = useState("daily");
+  const [theme, setTheme] = useState("light");
+  const [language, setLanguage] = useState("fr");
+  const [currency, setCurrency] = useState("XOF");
+  const [logo, setLogo] = useState<File | null>(null);
+  
+  const handleSaveGeneral = () => {
+    toast.success("Paramètres généraux enregistrés");
   };
   
-  const handleSaveSystemSettings = () => {
-    toast.success("Paramètres système enregistrés", {
-      description: "Les paramètres du système ont été mis à jour"
-    });
+  const handleSaveNotifications = () => {
+    toast.success("Paramètres de notifications enregistrés");
   };
   
-  const handleSaveNotificationSettings = () => {
-    toast.success("Paramètres de notification enregistrés", {
-      description: "Les paramètres de notification ont été mis à jour"
-    });
+  const handleSaveSystem = () => {
+    toast.success("Paramètres système enregistrés");
   };
   
-  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      // Dans une application réelle, nous téléchargerions le fichier
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result) {
-          setLogoPreview(event.target.result.toString());
-        }
-      };
-      reader.readAsDataURL(e.target.files[0]);
+      setLogo(e.target.files[0]);
+      toast.success("Logo téléchargé avec succès");
     }
   };
-  
-  const handleDatabaseBackup = () => {
-    toast.success("Sauvegarde démarrée", {
-      description: "La sauvegarde de la base de données a été lancée"
-    });
-  };
-  
-  const handleDatabaseRestore = () => {
-    toast.success("Restauration démarrée", {
-      description: "La restauration de la base de données a été lancée"
-    });
-  };
-  
+
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Paramètres du système</h1>
-        <p className="text-muted-foreground">
-          Configurez votre application selon vos besoins
-        </p>
+    <div className="container mx-auto p-4 space-y-6">
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">Paramètres</h1>
+          <p className="text-muted-foreground">
+            Configurez les paramètres de votre application
+          </p>
+        </div>
       </div>
-      
-      <Tabs defaultValue="company" className="space-y-4">
-        <TabsList className="grid grid-cols-1 md:grid-cols-5 gap-2 h-auto">
-          <TabsTrigger value="company" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <Building className="h-4 w-4 mr-2" />
-            Entreprise
-          </TabsTrigger>
-          <TabsTrigger value="system" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <Package className="h-4 w-4 mr-2" />
-            Système
-          </TabsTrigger>
-          <TabsTrigger value="notifications" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <BellRing className="h-4 w-4 mr-2" />
-            Notifications
-          </TabsTrigger>
-          <TabsTrigger value="backups" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <HardDrive className="h-4 w-4 mr-2" />
-            Sauvegardes
-          </TabsTrigger>
-          <TabsTrigger value="help" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-            <LifeBuoy className="h-4 w-4 mr-2" />
-            Aide
-          </TabsTrigger>
+
+      <Tabs defaultValue="general" className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="general">Informations Générales</TabsTrigger>
+          <TabsTrigger value="notifications">Notifications</TabsTrigger>
+          <TabsTrigger value="system">Système & Sécurité</TabsTrigger>
         </TabsList>
         
-        {/* Onglet Informations Entreprise */}
-        <TabsContent value="company">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Informations de l'entreprise</CardTitle>
-                <CardDescription>
-                  Ces informations seront utilisées dans les factures et les documents officiels
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
+        {/* Onglet Informations Générales */}
+        <TabsContent value="general" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Informations de l'Entreprise</CardTitle>
+              <CardDescription>
+                Ces informations apparaîtront sur les documents officiels comme les factures et devis.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="company-name">Nom de l'entreprise</Label>
-                  <Input 
-                    id="company-name" 
+                  <Label htmlFor="companyName">Nom de l'entreprise</Label>
+                  <Input
+                    id="companyName"
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
                   />
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="company-email">Email</Label>
-                  <Input 
-                    id="company-email" 
+                  <Label htmlFor="address">Adresse</Label>
+                  <Input
+                    id="address"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Téléphone</Label>
+                  <Input
+                    id="phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -156,74 +112,83 @@ const Settings = () => {
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="company-phone">Téléphone</Label>
-                  <Input 
-                    id="company-phone" 
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="company-address">Adresse</Label>
-                  <Textarea 
-                    id="company-address" 
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="company-tax-id">Numéro d'identification fiscale</Label>
-                  <Input 
-                    id="company-tax-id" 
+                  <Label htmlFor="taxId">Numéro d'identification fiscale</Label>
+                  <Input
+                    id="taxId"
                     value={taxId}
                     onChange={(e) => setTaxId(e.target.value)}
                   />
                 </div>
-              </CardContent>
-              <CardFooter>
-                <Button className="ml-auto" onClick={handleSaveCompanyInfo}>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="logo">Logo de l'entreprise</Label>
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" className="w-full" onClick={() => document.getElementById('logo-upload')?.click()}>
+                      <Upload className="mr-2 h-4 w-4" />
+                      Télécharger un logo
+                    </Button>
+                    <input
+                      id="logo-upload"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleLogoChange}
+                    />
+                    {logo && <span className="text-sm text-muted-foreground">{logo.name}</span>}
+                  </div>
+                </div>
+              </div>
+              
+              <Separator className="my-4" />
+              
+              <div className="flex justify-end">
+                <Button onClick={handleSaveGeneral}>
                   <Save className="mr-2 h-4 w-4" />
                   Enregistrer
                 </Button>
-              </CardFooter>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Logo et apparence</CardTitle>
-                <CardDescription>
-                  Personnalisez l'apparence de votre application
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <Label>Logo de l'entreprise</Label>
-                  <div className="flex justify-center">
-                    <div className="h-32 w-32 rounded-md border flex items-center justify-center overflow-hidden">
-                      <img 
-                        src={logoPreview} 
-                        alt="Logo de l'entreprise" 
-                        className="max-h-full max-w-full object-contain"
-                      />
-                    </div>
-                  </div>
-                  <div className="pt-2">
-                    <Input 
-                      id="company-logo" 
-                      type="file" 
-                      accept="image/*"
-                      onChange={handleLogoUpload}
-                    />
-                  </div>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Paramètres Régionaux</CardTitle>
+              <CardDescription>
+                Configurez la langue, la devise et d'autres paramètres régionaux.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="language">Langue</Label>
+                  <Select value={language} onValueChange={setLanguage}>
+                    <SelectTrigger id="language">
+                      <SelectValue placeholder="Sélectionner une langue" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="fr">Français</SelectItem>
+                      <SelectItem value="en">Anglais</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
                 
                 <div className="space-y-2">
-                  <Label htmlFor="company-theme">Thème</Label>
-                  <Select defaultValue="light">
-                    <SelectTrigger id="company-theme">
-                      <SelectValue placeholder="Choisir un thème" />
+                  <Label htmlFor="currency">Devise</Label>
+                  <Select value={currency} onValueChange={setCurrency}>
+                    <SelectTrigger id="currency">
+                      <SelectValue placeholder="Sélectionner une devise" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="XOF">XOF (FCFA)</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="theme">Thème</Label>
+                  <Select value={theme} onValueChange={setTheme}>
+                    <SelectTrigger id="theme">
+                      <SelectValue placeholder="Sélectionner un thème" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="light">Clair</SelectItem>
@@ -232,505 +197,161 @@ const Settings = () => {
                     </SelectContent>
                   </Select>
                 </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="company-accent-color">Couleur d'accent</Label>
-                  <div className="grid grid-cols-5 gap-2">
-                    {["#9b87f5", "#22c55e", "#f59e0b", "#ef4444", "#8b5cf6"].map((color) => (
-                      <div 
-                        key={color}
-                        className="h-8 rounded-md cursor-pointer border-2 border-transparent hover:border-gray-400 transition-colors"
-                        style={{ backgroundColor: color }}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button className="ml-auto" onClick={handleSaveCompanyInfo}>
+              </div>
+              
+              <Separator className="my-4" />
+              
+              <div className="flex justify-end">
+                <Button onClick={handleSaveGeneral}>
                   <Save className="mr-2 h-4 w-4" />
                   Enregistrer
                 </Button>
-              </CardFooter>
-            </Card>
-          </div>
-        </TabsContent>
-        
-        {/* Onglet Paramètres Système */}
-        <TabsContent value="system">
-          <Card>
-            <CardHeader>
-              <CardTitle>Paramètres généraux</CardTitle>
-              <CardDescription>
-                Configurez le comportement global du système
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Paramètres de production</h3>
-                  
-                  <div className="flex flex-col md:flex-row gap-4">
-                    <div className="space-y-2 flex-1">
-                      <Label htmlFor="production-capacity">Capacité de production journalière</Label>
-                      <CustomInput 
-                        id="production-capacity" 
-                        type="number" 
-                        defaultValue={1000} 
-                        suffix="briques"
-                      />
-                    </div>
-                    
-                    <div className="space-y-2 flex-1">
-                      <Label htmlFor="stock-alert-threshold">Seuil d'alerte stock</Label>
-                      <CustomInput 
-                        id="stock-alert-threshold" 
-                        type="number" 
-                        defaultValue={100} 
-                        suffix="unités"
-                      />
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Paramètres des commandes</h3>
-                  
-                  <div className="flex flex-col md:flex-row gap-4">
-                    <div className="space-y-2 flex-1">
-                      <Label htmlFor="order-number-prefix">Préfixe numéro de commande</Label>
-                      <Input 
-                        id="order-number-prefix" 
-                        defaultValue="CMD-2024-" 
-                      />
-                    </div>
-                    
-                    <div className="space-y-2 flex-1">
-                      <Label htmlFor="invoice-number-prefix">Préfixe numéro de facture</Label>
-                      <Input 
-                        id="invoice-number-prefix" 
-                        defaultValue="FACT-2024-" 
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-col md:flex-row gap-4">
-                    <div className="space-y-2 flex-1">
-                      <Label htmlFor="default-payment-terms">Conditions de paiement par défaut</Label>
-                      <Select defaultValue="30">
-                        <SelectTrigger id="default-payment-terms">
-                          <SelectValue placeholder="Conditions de paiement" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="immediate">Paiement immédiat</SelectItem>
-                          <SelectItem value="15">15 jours</SelectItem>
-                          <SelectItem value="30">30 jours</SelectItem>
-                          <SelectItem value="45">45 jours</SelectItem>
-                          <SelectItem value="60">60 jours</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div className="space-y-2 flex-1">
-                      <Label htmlFor="default-vat-rate">Taux de TVA par défaut</Label>
-                      <CustomInput 
-                        id="default-vat-rate" 
-                        type="number" 
-                        defaultValue={18} 
-                        suffix="%"
-                      />
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Options avancées</h3>
-                  
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label htmlFor="auto-stock-update" className="block mb-1">Mise à jour automatique des stocks</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Mettre à jour automatiquement les stocks lors de la validation des commandes
-                        </p>
-                      </div>
-                      <Switch id="auto-stock-update" defaultChecked />
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label htmlFor="enable-sms" className="block mb-1">Notifications SMS</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Activer les notifications SMS pour les clients et le personnel
-                        </p>
-                      </div>
-                      <Switch id="enable-sms" defaultChecked />
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label htmlFor="auto-invoice" className="block mb-1">Facturation automatique</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Générer automatiquement les factures à la livraison
-                        </p>
-                      </div>
-                      <Switch id="auto-invoice" defaultChecked />
-                    </div>
-                  </div>
-                </div>
               </div>
             </CardContent>
-            <CardFooter>
-              <Button variant="outline" className="mr-2">
-                Réinitialiser
-              </Button>
-              <Button onClick={handleSaveSystemSettings}>
-                <Save className="mr-2 h-4 w-4" />
-                Enregistrer
-              </Button>
-            </CardFooter>
           </Card>
         </TabsContent>
         
         {/* Onglet Notifications */}
-        <TabsContent value="notifications">
+        <TabsContent value="notifications" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Paramètres de notification</CardTitle>
+              <CardTitle>Paramètres de Notifications</CardTitle>
               <CardDescription>
-                Configurez comment et quand les notifications sont envoyées
+                Configurez quand et comment vous souhaitez recevoir des notifications.
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Notifications email</h3>
-                  
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label htmlFor="email-new-order" className="block mb-1">Nouvelle commande</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Envoyer un email lors de la création d'une nouvelle commande
-                        </p>
-                      </div>
-                      <Switch id="email-new-order" defaultChecked />
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label htmlFor="email-order-status" className="block mb-1">Changement de statut</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Envoyer un email à chaque changement de statut d'une commande
-                        </p>
-                      </div>
-                      <Switch id="email-order-status" defaultChecked />
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label htmlFor="email-invoice" className="block mb-1">Nouvelle facture</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Envoyer un email avec la facture lors de sa création
-                        </p>
-                      </div>
-                      <Switch id="email-invoice" defaultChecked />
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label htmlFor="email-low-stock" className="block mb-1">Alerte stock bas</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Envoyer un email quand le stock d'un produit est bas
-                        </p>
-                      </div>
-                      <Switch id="email-low-stock" defaultChecked />
-                    </div>
+            <CardContent className="space-y-6">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="stockAlerts">Alertes de stock</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Recevoir des notifications lorsque le stock est bas
+                    </p>
                   </div>
+                  <Switch
+                    id="stockAlerts"
+                    checked={stockAlerts}
+                    onCheckedChange={setStockAlerts}
+                  />
                 </div>
                 
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Notifications SMS</h3>
-                  
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label htmlFor="sms-new-order" className="block mb-1">Nouvelle commande</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Envoyer un SMS au responsable production lors d'une nouvelle commande
-                        </p>
-                      </div>
-                      <Switch id="sms-new-order" defaultChecked />
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label htmlFor="sms-order-ready" className="block mb-1">Commande prête</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Envoyer un SMS au client quand sa commande est prête
-                        </p>
-                      </div>
-                      <Switch id="sms-order-ready" defaultChecked />
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label htmlFor="sms-payment-due" className="block mb-1">Paiement dû</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Envoyer un SMS de rappel de paiement
-                        </p>
-                      </div>
-                      <Switch id="sms-payment-due" defaultChecked />
-                    </div>
+                <Separator />
+                
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="orderNotifications">Notifications de commandes</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Recevoir des notifications pour les nouvelles commandes et les mises à jour
+                    </p>
                   </div>
+                  <Switch
+                    id="orderNotifications"
+                    checked={orderNotifications}
+                    onCheckedChange={setOrderNotifications}
+                  />
                 </div>
                 
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Notifications dans l'application</h3>
-                  
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label htmlFor="app-all-events" className="block mb-1">Tous les événements</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Afficher des notifications pour tous les événements du système
-                        </p>
-                      </div>
-                      <Switch id="app-all-events" defaultChecked />
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <Label htmlFor="app-sound" className="block mb-1">Sons de notification</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Jouer un son lors de la réception d'une notification
-                        </p>
-                      </div>
-                      <Switch id="app-sound" defaultChecked />
-                    </div>
+                <Separator />
+                
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="smsNotifications">Notifications SMS</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Envoyer des SMS aux clients pour les mises à jour de commandes
+                    </p>
                   </div>
+                  <Switch
+                    id="smsNotifications"
+                    checked={smsNotifications}
+                    onCheckedChange={setSmsNotifications}
+                  />
                 </div>
               </div>
+              
+              <Separator className="my-4" />
+              
+              <div className="flex justify-end">
+                <Button onClick={handleSaveNotifications}>
+                  <Save className="mr-2 h-4 w-4" />
+                  Enregistrer
+                </Button>
+              </div>
             </CardContent>
-            <CardFooter>
-              <Button onClick={handleSaveNotificationSettings}>
-                <Save className="mr-2 h-4 w-4" />
-                Enregistrer
-              </Button>
-            </CardFooter>
           </Card>
         </TabsContent>
         
-        {/* Onglet Sauvegardes */}
-        <TabsContent value="backups">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Sauvegarde de la base de données</CardTitle>
-                <CardDescription>
-                  Créez des sauvegardes manuelles ou planifiées
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Les sauvegardes automatiques sont effectuées quotidiennement à 23h00 et conservées pendant 30 jours.
-                  </p>
-                  
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <Label htmlFor="auto-backup" className="block mb-1">Sauvegardes automatiques</Label>
-                    </div>
-                    <Switch id="auto-backup" defaultChecked />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="backup-retention">Conservation des sauvegardes</Label>
-                    <Select defaultValue="30">
-                      <SelectTrigger id="backup-retention">
-                        <SelectValue placeholder="Durée de conservation" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="7">7 jours</SelectItem>
-                        <SelectItem value="14">14 jours</SelectItem>
-                        <SelectItem value="30">30 jours</SelectItem>
-                        <SelectItem value="60">60 jours</SelectItem>
-                        <SelectItem value="90">90 jours</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-                
-                <div className="pt-4">
-                  <Button className="w-full" onClick={handleDatabaseBackup}>
-                    <Download className="mr-2 h-4 w-4" />
-                    Créer une sauvegarde maintenant
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>Restauration de la base de données</CardTitle>
-                <CardDescription>
-                  Restaurez une sauvegarde précédente
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="border rounded-md p-4">
-                    <h4 className="font-medium">Dernières sauvegardes</h4>
-                    <div className="mt-2 space-y-2">
-                      <div className="flex items-center justify-between py-2 border-b">
-                        <div>
-                          <p className="font-medium">Sauvegarde automatique</p>
-                          <p className="text-sm text-muted-foreground">Aujourd'hui, 23:00</p>
-                        </div>
-                        <Button variant="outline" size="sm">
-                          Restaurer
-                        </Button>
-                      </div>
-                      <div className="flex items-center justify-between py-2 border-b">
-                        <div>
-                          <p className="font-medium">Sauvegarde automatique</p>
-                          <p className="text-sm text-muted-foreground">Hier, 23:00</p>
-                        </div>
-                        <Button variant="outline" size="sm">
-                          Restaurer
-                        </Button>
-                      </div>
-                      <div className="flex items-center justify-between py-2">
-                        <div>
-                          <p className="font-medium">Sauvegarde manuelle</p>
-                          <p className="text-sm text-muted-foreground">15/04/2024, 15:30</p>
-                        </div>
-                        <Button variant="outline" size="sm">
-                          Restaurer
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="pt-2">
-                    <p className="text-sm text-muted-foreground mb-2">
-                      Ou restaurez à partir d'un fichier de sauvegarde
-                    </p>
-                    <div className="flex items-end gap-2">
-                      <div className="flex-1">
-                        <Input 
-                          id="backup-file" 
-                          type="file" 
-                          accept=".sql,.zip,.gz"
-                        />
-                      </div>
-                      <Button onClick={handleDatabaseRestore}>
-                        <Upload className="mr-2 h-4 w-4" />
-                        Restaurer
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-        
-        {/* Onglet Aide */}
-        <TabsContent value="help">
+        {/* Onglet Système & Sécurité */}
+        <TabsContent value="system" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Aide et support</CardTitle>
+              <CardTitle>Sauvegardes</CardTitle>
               <CardDescription>
-                Obtenez de l'assistance et consultez la documentation
+                Configurez la fréquence des sauvegardes automatiques.
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg">Documentation</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Consultez notre documentation complète avec des guides pas à pas.
-                    </p>
-                    <Button variant="outline" className="w-full">
-                      <Globe className="mr-2 h-4 w-4" />
-                      Accéder
-                    </Button>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg">Support technique</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Contactez notre équipe technique pour toute assistance.
-                    </p>
-                    <div className="space-y-2">
-                      <div className="flex items-center">
-                        <Mail className="h-4 w-4 mr-2 text-muted-foreground" />
-                        <span>support@cornerstonebriques.com</span>
-                      </div>
-                      <div className="flex items-center">
-                        <PhoneCall className="h-4 w-4 mr-2 text-muted-foreground" />
-                        <span>+228 70 00 00 01</span>
-                      </div>
-                      <Button variant="outline" className="w-full mt-2">
-                        <MessageSquare className="mr-2 h-4 w-4" />
-                        Chat en direct
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-lg">Formation</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Accédez à nos vidéos de formation pour vous aider à utiliser l'application.
-                    </p>
-                    <Button variant="outline" className="w-full">
-                      <UserCog className="mr-2 h-4 w-4" />
-                      Voir les formations
-                    </Button>
-                  </CardContent>
-                </Card>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="backupFrequency">Fréquence de sauvegarde</Label>
+                <Select value={backupFrequency} onValueChange={setBackupFrequency}>
+                  <SelectTrigger id="backupFrequency">
+                    <SelectValue placeholder="Sélectionner une fréquence" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="hourly">Toutes les heures</SelectItem>
+                    <SelectItem value="daily">Quotidienne</SelectItem>
+                    <SelectItem value="weekly">Hebdomadaire</SelectItem>
+                    <SelectItem value="monthly">Mensuelle</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               
-              <div className="mt-8 border rounded-md p-6">
-                <h3 className="text-lg font-medium mb-4">FAQ - Questions fréquemment posées</h3>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-medium">Comment ajouter un nouvel utilisateur ?</h4>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Rendez-vous dans la section "Utilisateurs", cliquez sur "Nouvel utilisateur" et remplissez le formulaire.
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Comment générer une facture ?</h4>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Dans la section "Commandes", sélectionnez une commande et cliquez sur "Générer une facture".
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Comment configurer les notifications SMS ?</h4>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Allez dans "Paramètres" > "Notifications" et configurez les options SMS selon vos besoins.
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Comment mettre à jour mes informations d'entreprise ?</h4>
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Rendez-vous dans "Paramètres" > "Entreprise" et modifiez les informations selon vos besoins.
-                    </p>
-                  </div>
-                </div>
+              <div className="flex items-center p-4 mt-4 bg-amber-50 border border-amber-200 rounded-md">
+                <AlertTriangle className="h-5 w-5 text-amber-500 mr-2" />
+                <p className="text-sm text-amber-700">
+                  Les sauvegardes sont essentielles pour la récupération des données en cas de panne. 
+                  Nous recommandons une sauvegarde quotidienne.
+                </p>
+              </div>
+              
+              <Separator className="my-4" />
+              
+              <div className="flex justify-end">
+                <Button onClick={handleSaveSystem}>
+                  <Save className="mr-2 h-4 w-4" />
+                  Enregistrer
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>Sécurité</CardTitle>
+              <CardDescription>
+                Configurez les paramètres de sécurité de l'application.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Button variant="destructive" className="w-full md:w-auto">
+                  Réinitialiser tous les mots de passe utilisateurs
+                </Button>
+              </div>
+              
+              <div className="space-y-2">
+                <Button variant="outline" className="w-full md:w-auto">
+                  Consulter les journaux d'activité
+                </Button>
+              </div>
+              
+              <Separator className="my-4" />
+              
+              <div className="flex justify-end">
+                <Button onClick={handleSaveSystem}>
+                  <Save className="mr-2 h-4 w-4" />
+                  Enregistrer
+                </Button>
               </div>
             </CardContent>
           </Card>
