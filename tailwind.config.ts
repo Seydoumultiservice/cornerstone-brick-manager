@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,11 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+                terracotta: '#bf6d52',
+                sand: '#f2e3bc',
+                slate: '#3d3d3d',
+                brickred: '#a83232',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +89,16 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+                'progress': {
+                    '0%': { width: '0%' },
+                    '100%': { width: '100%' }
+                }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+                'progress': 'progress 2.5s linear forwards'
 			}
 		}
 	},
