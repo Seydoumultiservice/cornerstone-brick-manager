@@ -11,6 +11,10 @@ import OrdersList from "./pages/OrdersList";
 import OrderDetail from "./pages/OrderDetail";
 import NewOrder from "./pages/NewOrder";
 import Production from "./pages/Production";
+import Accounting from "./pages/Accounting";
+import Users from "./pages/Users";
+import Settings from "./pages/Settings";
+import Quotes from "./pages/Quotes";
 
 const queryClient = new QueryClient();
 
@@ -42,41 +46,24 @@ const App = () => (
               <Production />
             </Layout>
           } />
-          {/* Ces routes seront implémentées plus tard */}
           <Route path="/comptabilite" element={
             <Layout>
-              <div className="flex items-center justify-center min-h-[70vh]">
-                <div className="text-center">
-                  <h2 className="text-2xl font-bold mb-2">Module Comptabilité</h2>
-                  <p className="text-muted-foreground">
-                    Cette fonctionnalité sera disponible dans la prochaine version.
-                  </p>
-                </div>
-              </div>
+              <Accounting />
             </Layout>
           } />
           <Route path="/utilisateurs" element={
             <Layout>
-              <div className="flex items-center justify-center min-h-[70vh]">
-                <div className="text-center">
-                  <h2 className="text-2xl font-bold mb-2">Gestion des Utilisateurs</h2>
-                  <p className="text-muted-foreground">
-                    Cette fonctionnalité sera disponible dans la prochaine version.
-                  </p>
-                </div>
-              </div>
+              <Users />
             </Layout>
           } />
           <Route path="/parametres" element={
             <Layout>
-              <div className="flex items-center justify-center min-h-[70vh]">
-                <div className="text-center">
-                  <h2 className="text-2xl font-bold mb-2">Paramètres du Système</h2>
-                  <p className="text-muted-foreground">
-                    Cette fonctionnalité sera disponible dans la prochaine version.
-                  </p>
-                </div>
-              </div>
+              <Settings />
+            </Layout>
+          } />
+          <Route path="/devis-factures" element={
+            <Layout>
+              <Quotes />
             </Layout>
           } />
           {/* Route "catch-all" pour 404 */}

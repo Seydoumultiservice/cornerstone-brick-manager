@@ -1,5 +1,5 @@
 
-import { Briefcase, ClipboardList, LayoutDashboard, Package, Settings, Users } from "lucide-react";
+import { Briefcase, ClipboardList, FileText, LayoutDashboard, Package, Settings, Users } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -26,6 +26,11 @@ const mainMenuItems = [
     title: "Commandes",
     url: "/commandes",
     icon: ClipboardList,
+  },
+  {
+    title: "Devis & Factures",
+    url: "/devis-factures",
+    icon: FileText,
   },
   {
     title: "Production",
@@ -114,7 +119,7 @@ export function AppSidebar() {
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-medium">Admin Système</span>
-            <span className="text-xs text-muted-foreground">admin@cornerstonebriques.tg</span>
+            <span className="text-xs text-muted-foreground">contact@cornerstonebriques.com</span>
           </div>
         </div>
       </SidebarFooter>
