@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,6 +14,7 @@ import Accounting from "./pages/Accounting";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import Quotes from "./pages/Quotes";
+import Stock from "./pages/Stock";
 import { useState } from "react";
 
 const App = () => {
@@ -43,6 +43,11 @@ const App = () => {
                 <OrderDetail />
               </Layout>
             } />
+            <Route path="/stock" element={
+              <Layout>
+                <Stock />
+              </Layout>
+            } />
             <Route path="/production" element={
               <Layout>
                 <Production />
@@ -68,7 +73,6 @@ const App = () => {
                 <Quotes />
               </Layout>
             } />
-            {/* Route "catch-all" pour 404 */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

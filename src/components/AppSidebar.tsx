@@ -28,6 +28,11 @@ const mainMenuItems = [
     icon: ClipboardList,
   },
   {
+    title: "Stock",
+    url: "/stock",
+    icon: Package,
+  },
+  {
     title: "Devis & Factures",
     url: "/devis-factures",
     icon: FileText,
