@@ -56,7 +56,7 @@ const NewOrder = () => {
       if (product) {
         newItems[index] = {
           ...newItems[index],
-          [field]: value,
+          [field]: value as string, // Fix for error 1: explicitly cast to string
           productName: product.name,
           unitPrice: product.unitPrice,
         };
@@ -219,15 +219,19 @@ const NewOrder = () => {
                         </div>
                         <div className="col-span-2">
                           <Label htmlFor={`unitPrice-${index}`}>Prix unitaire</Label>
-                          <Input
-                            id={`unitPrice-${index}`}
-                            type="number"
-                            min="0"
-                            value={item.unitPrice}
-                            onChange={(e) => updateItem(index, "unitPrice", parseInt(e.target.value) || 0)}
-                            className="text-right"
-                            suffix="FCFA"
-                          />
+                          <div className="relative">
+                            <Input
+                              id={`unitPrice-${index}`}
+                              type="number"
+                              min="0"
+                              value={item.unitPrice}
+                              onChange={(e) => updateItem(index, "unitPrice", parseInt(e.target.value) || 0)}
+                              className="text-right pr-14"
+                            />
+                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-sm text-muted-foreground">
+                              FCFA
+                            </div>
+                          </div>
                         </div>
                         <div className="col-span-2 text-right">
                           <Label>Total</Label>
